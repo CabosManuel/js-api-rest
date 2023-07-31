@@ -5,18 +5,28 @@
 	margin: 0;
 }
 
+:root {
+	--yellow: #FAED8C;
+	--white: #eff6e0;
+	--dark-blue: #01161e;
+	--green: #058c42;
+	--dark-green: #04471c;
+	--pink: #FA73BD;
+}
+
 html {
 	font-size: 62.5%;
 	font-family: 'Open Sans', sans-serif;
 }
 
 body {
+	margin: 0 20px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	gap: 10px;
-	color: #eff6e0;
-	background: #01161e;
+	color: var(--white);
+	background: var(--dark-blue);
 }
 
 h1 {
@@ -36,22 +46,52 @@ button {
 #btnRefresh {
 	padding: 10px;
 	font-size: 1.4rem;
-	background: #058c42;
+	background: var(--green);
 	border-radius: 5px;
 	cursor: pointer;
 }
 
 #btnRefresh:active {
-	background-color: #04471c;
+	background-color: var(--dark-green);
 }
 
 #gifsRecommended {
-	margin: 0 20px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	gap: 10px;
 	flex-wrap: wrap;
+}
+
+
+.gifBox {
+	position: relative;
+}
+
+.unstar {
+	position: absolute;
+	right: 10px;
+	top: 15px;
+	color: var(--pink);
+	filter: drop-shadow(0px 1px 1px rgb(0 0 0 / 0.9));
+	cursor: pointer;
+}
+
+.unstar:active {
+	top: 17px;
+	filter: drop-shadow(0px 0px 0px rgb(0 0 0 / 0.9));
+}
+
+.unstar:hover {
+	color: var(--yellow);
+}
+
+.unstar::after {
+	content: '';
+	z-index: -1;
+	-webkit-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	transition: all 0.3s;
 }
 
 .gif {
@@ -62,6 +102,63 @@ button {
 .loading {
 	opacity:0.1;
 }
+
+.favSection {
+	width: 100%;
+	margin-top: 20px;
+	padding: 10px;
+	display: flex;
+	flex-direction: column;
+	align-items: start;
+	background-color: #132D38;
+	border-radius: 10px;
+}
+
+.fa-face-grin-stars {
+	margin-right: 6px;
+	color: var(--yellow);
+}
+
+h2 {
+	font-size: 1.8rem;
+}
+
+#gifsFavorites {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+	flex-wrap: wrap;
+	width: 100%;
+	padding: 10px;
+}
+
+.star {
+	position: absolute;
+	right: 10px;
+	top: 15px;
+	color: #FAED8C;
+	filter: drop-shadow(0px 1px 1px rgb(0 0 0 / 0.9));
+	cursor: pointer;
+}
+
+.star:hover {
+	color: var(--pink);
+}
+
+.star:active {
+	top: 17px;
+	filter: drop-shadow(0px 0px 0px rgb(0 0 0 / 0.9));
+}
+
+.star::after {
+	content: '';
+	z-index: -1;
+	-webkit-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	transition: all 0.3s;
+}
+
 
 /* Link reset style */
 a {

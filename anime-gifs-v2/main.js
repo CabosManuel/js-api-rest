@@ -20,6 +20,7 @@ const gifsRecommended = document.getElementById('gifsRecommended');
 for (let i = 1; i <= NUM_GIFS; i++) {
 	let gif = 
 	`<div class="gifBox">
+		<i class="unstar fa-regular fa-star fa-xl"></i>
 		<img id="animeGif${i}" class="gif" alt="Anime GIF ${i}">
 	</div>`;
 
