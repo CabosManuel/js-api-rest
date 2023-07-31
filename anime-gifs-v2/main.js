@@ -1,12 +1,15 @@
 const NUM_GIFS = 6;
+
+// Documentation: https://waifu.pics/docs
 const API_URL_BASE = 'https://api.waifu.pics/sfw';
 const API_PATHS = [
-	`/bonk`,
-	`/yeet`,
-	`/kick`,
-	`/smile`,
-	`/wave`,
-	`/cry`,
+	'/bonk',
+	'/yeet',
+	'/kick',
+	'/smile',
+	'/wave',
+	'/cry',
+	'/highfive',
 ];
 
 async function requestGif(url) {
@@ -68,8 +71,11 @@ const BLACKLIST_GIFS = [
 	'https://i.waifu.pics/l3_ObDa.gif', // cartoon dog png
 	'https://i.waifu.pics/AWDamwE.gif', // cartoon
 	'https://i.waifu.pics/Mnw7eRk.gif', // sans yeet
+	// very large
+	'https://i.waifu.pics/0omhd79.gif',
+	'https://i.waifu.pics/fwjX3GR.gif',
+	'https://i.waifu.pics/T0gfAdU.gif',
 	// others
 	'https://i.waifu.pics/5S6AVgU.gif', // not safe
 	'https://i.waifu.pics/X6tN050.GIF', // static gif
-	'https://i.waifu.pics/0omhd79.gif', // very large
 ]

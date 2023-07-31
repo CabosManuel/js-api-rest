@@ -29,8 +29,19 @@ body {
 	background: var(--dark-blue);
 }
 
+.title {
+	display: flex;
+	align-items: baseline;
+	gap: 6px;
+}
+
 h1 {
 	font-size: 3.6rem;
+}
+
+h3 {
+	font-size: 1.2rem;
+	color: gray;
 }
 
 /* Button reset style */
