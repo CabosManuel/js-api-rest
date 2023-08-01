@@ -62,6 +62,39 @@ btnRefresh.addEventListener('click', () => {
 	refreshGifs();
 });
 
+const unstarButtons = document.querySelectorAll('.unstar');
+const starButtons = document.querySelectorAll('.star');
+
+console.log('unstar',unstarButtons);
+console.log('star',starButtons);
+
+// TODO: Corregir en mobile, cuando da un touch a la estrella, cambia la forma, pero no el color
+// luego de dar un touch en otro lado de la pantalla recién cambia el color
+unstarButtons.forEach(unstarBtn => {
+	unstarBtn.addEventListener('click', () => {
+		
+		unstarBtn.classList.toggle('star');
+		unstarBtn.classList.toggle('fa-regular');
+		unstarBtn.classList.toggle('fa-solid');
+		
+		const parentDiv = unstarBtn.closest('div');
+		// console.log(parentDiv);
+
+		if (parentDiv) {
+			const gifId = parentDiv.querySelector('img').id;
+			addToFavorites(gifId);
+			console.log('ID de la imagen:', gifId);
+		} else {
+			console.log('No se encontró el elemento padre.');
+		}
+	});
+});
+
+function addToFavorites(id) {
+	const gif = document.getElementById(id);
+	console.log(gif.src);
+}
+
 const BLACKLIST_GIFS = [
 	// no anime
 	'https://i.waifu.pics/NJo1_Fd.gif', // bugs bunny
