@@ -109,6 +109,7 @@ const BLACKLIST_GIFS = [
 	'https://i.waifu.pics/fwjX3GR.gif',
 	'https://i.waifu.pics/T0gfAdU.gif',
 	// others
+	'https://i.waifu.pics/gwNlL3Q.gif', // duplicate
 	'https://i.waifu.pics/5S6AVgU.gif', // not safe
 	'https://i.waifu.pics/X6tN050.GIF', // static gif
 ]
