@@ -1,4 +1,5 @@
-const NUM_GIFS = 6;
+const NUM_GIFS = 4;
+const MAX_FAVORITES = 2;
 
 // Documentation: https://waifu.pics/docs
 const API_URL_BASE = 'https://api.waifu.pics/sfw';
@@ -23,13 +24,14 @@ const gifsRecommended = document.getElementById('gifsRecommended');
 for (let i = 1; i <= NUM_GIFS; i++) {
 	let gif = 
 	`<div class="gifBox">
-		<i class="unstar fa-regular fa-star fa-xl"></i>
+		<i class="unstar fa-solid fa-star fa-xl"></i>
 		<img id="animeGif${i}" class="gif" alt="Anime GIF ${i}">
 	</div>`;
 
 	gifsRecommended.innerHTML += gif;
 }
 
+// TODO: Hacer que se carguen todas al mismo tiempo y no una por una
 async function refreshGifs() {
 	let historyGifs = [];
 
@@ -41,10 +43,7 @@ async function refreshGifs() {
 		do {
 			response = await requestGif(`${API_URL_BASE}${API_PATHS[randomIndexPath]}`);
 			data = await response.json();
-		} while (
-			(BLACKLIST_GIFS.includes(data.url) || historyGifs.includes(data.url))
-			&& response.ok
-		)
+		} while ( (BLACKLIST_GIFS.includes(data.url) || historyGifs.includes(data.url)) && response.ok )
 		
 		historyGifs.push(data.url);
 		
@@ -62,37 +61,74 @@ btnRefresh.addEventListener('click', () => {
 	refreshGifs();
 });
 
-const unstarButtons = document.querySelectorAll('.unstar');
-const starButtons = document.querySelectorAll('.star');
 
-console.log('unstar',unstarButtons);
-console.log('star',starButtons);
+let unstarBtnsRecommended = gifsRecommended.querySelectorAll('.unstar');
+let starBtnsRecommended = gifsRecommended.querySelectorAll('.star');
+console.log('unstar',unstarBtnsRecommended);
+console.log('star',starBtnsRecommended);
 
-// TODO: Corregir en mobile, cuando da un touch a la estrella, cambia la forma, pero no el color
-// luego de dar un touch en otro lado de la pantalla recién cambia el color
-unstarButtons.forEach(unstarBtn => {
-	unstarBtn.addEventListener('click', () => {
-		
-		unstarBtn.classList.toggle('star');
-		unstarBtn.classList.toggle('fa-regular');
-		unstarBtn.classList.toggle('fa-solid');
-		
-		const parentDiv = unstarBtn.closest('div');
-		// console.log(parentDiv);
+addListenerFavoriteBtns();
 
-		if (parentDiv) {
-			const gifId = parentDiv.querySelector('img').id;
-			addToFavorites(gifId);
-			console.log('ID de la imagen:', gifId);
-		} else {
-			console.log('No se encontró el elemento padre.');
-		}
+function addListenerFavoriteBtns() {
+	unstarBtnsRecommended.forEach(favBtn => {
+		favBtn.addEventListener('click', () => {
+			const parentDiv = favBtn.closest('div');
+			// console.log(parentDiv);
+			
+			const gif = parentDiv.querySelector('img');
+			// console.log('ID de la imagen:', gif.id);
+			
+			
+			if(favBtn.classList.contains('unstar')) {
+				addToFavorites(gif);
+			} else if (favBtn.classList.contains('star')) {
+				removeFromFavorites(gif);
+			}
+			
+			// FIXME: Al intentar agregar a favorito y si es más del máximo,
+			// no lo agregar, pero sí modifica el estilo de la estrella	bloqueando el botón
+			favBtn.classList.toggle('unstar');
+			favBtn.classList.toggle('star');
+		});
 	});
-});
+}
 
-function addToFavorites(id) {
-	const gif = document.getElementById(id);
-	console.log(gif.src);
+// FAVORITES --------------------------------------------------
+const gifsFavorites = document.getElementById("gifsFavorites");
+let gifsFavoritesList = [];
+
+function addToFavorites(imgGif) {
+	// console.log(gifsFavorites);
+	console.log(imgGif);
+	// console.log(imgGif.src);
+	
+	if (validateDuplicatesAndMaxFavoritesSection(imgGif)) {
+		let gifFavorite =
+		`<div class="gifBox">
+		<img id="${imgGif.id}" src="${imgGif.src}" class="gif" alt="${imgGif.alt}">
+		</div>`;
+		
+		gifsFavorites.innerHTML += gifFavorite;
+		
+		gifsFavoritesList.push(imgGif);
+	}
+}
+
+function removeFromFavorites(imgGif) {
+	const imgGifFavorite = gifsFavorites.querySelector(`#${imgGif.id}`);
+	const imgGifFavoriteContainer = imgGifFavorite.closest('div');
+	imgGifFavoriteContainer.remove();
+	
+	console.log('gifsFavoritesList before: ', gifsFavoritesList);
+	let indexToDelete = gifsFavoritesList.indexOf(imgGif);
+	gifsFavoritesList.splice(indexToDelete, 1);
+	console.log('gif removed: ', imgGifFavoriteContainer);
+	console.log('gifsFavoritesList after: ', gifsFavoritesList);
+}
+
+function validateDuplicatesAndMaxFavoritesSection(imgGif) {
+	let nFavorites = gifsFavorites.querySelectorAll('img').length;
+	return nFavorites < MAX_FAVORITES && !gifsFavoritesList.includes(imgGif);
 }
 
 const BLACKLIST_GIFS = [
@@ -108,6 +144,7 @@ const BLACKLIST_GIFS = [
 	'https://i.waifu.pics/0omhd79.gif',
 	'https://i.waifu.pics/fwjX3GR.gif',
 	'https://i.waifu.pics/T0gfAdU.gif',
+	'https://i.waifu.pics/gGX~reJ.gif',
 	// others
 	'https://i.waifu.pics/gwNlL3Q.gif', // duplicate
 	'https://i.waifu.pics/5S6AVgU.gif', // not safe
