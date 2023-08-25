@@ -73,22 +73,17 @@ function addListenerFavoriteBtns() {
 	unstarBtnsRecommended.forEach(favBtn => {
 		favBtn.addEventListener('click', () => {
 			const parentDiv = favBtn.closest('div');
-			// console.log(parentDiv);
-			
 			const gif = parentDiv.querySelector('img');
-			// console.log('ID de la imagen:', gif.id);
 			
-			
-			if(favBtn.classList.contains('unstar')) {
+			if(favBtn.classList.contains('unstar') && validateMaxFavorites()) {
 				addToFavorites(gif);
+				favBtn.classList.toggle('unstar');
+				favBtn.classList.toggle('star');
 			} else if (favBtn.classList.contains('star')) {
 				removeFromFavorites(gif);
+				favBtn.classList.toggle('unstar');
+				favBtn.classList.toggle('star');
 			}
-			
-			// FIXME: Al intentar agregar a favorito y si es más del máximo,
-			// no lo agregar, pero sí modifica el estilo de la estrella	bloqueando el botón
-			favBtn.classList.toggle('unstar');
-			favBtn.classList.toggle('star');
 		});
 	});
 }
@@ -102,7 +97,7 @@ function addToFavorites(imgGif) {
 	console.log(imgGif);
 	// console.log(imgGif.src);
 	
-	if (validateDuplicatesAndMaxFavoritesSection(imgGif)) {
+	if (validateDuplicatesFavorites(imgGif) && validateMaxFavorites()) {
 		let gifFavorite =
 		`<div class="gifBox">
 		<img id="${imgGif.id}" src="${imgGif.src}" class="gif" alt="${imgGif.alt}">
@@ -126,9 +121,15 @@ function removeFromFavorites(imgGif) {
 	console.log('gifsFavoritesList after: ', gifsFavoritesList);
 }
 
-function validateDuplicatesAndMaxFavoritesSection(imgGif) {
+function validateDuplicatesFavorites(imgGif) {
+	return !gifsFavoritesList.includes(imgGif);
+}
+
+function validateMaxFavorites() {
 	let nFavorites = gifsFavorites.querySelectorAll('img').length;
-	return nFavorites < MAX_FAVORITES && !gifsFavoritesList.includes(imgGif);
+	let isLessThanMaxFavorites = nFavorites < MAX_FAVORITES;
+	return isLessThanMaxFavorites;
+}
 }
 
 const BLACKLIST_GIFS = [
