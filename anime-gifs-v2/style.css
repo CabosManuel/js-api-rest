@@ -165,41 +165,51 @@ h2 {
 }
 
 .notifications {
-	position: absolute;
+	position: fixed;
 	right: 0;
 	display: flex;
 	flex-direction: column;
-	gap: 3px;
-	width: 250px;
-	height: 200px;
+	gap: 5px;
 	margin: 5px;
 	padding: 5px;
 }
 
 .notification {
-	width: 100%;
+	display: flex;
+	align-items: center;
+	width: 250px;
 	padding: 10px;
-	background: var(--red);
 	border-radius: 4px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 	opacity: 0;
-	transition: opacity 0.6s linear;
-}
-
-.no-display {
-	display: none;
-}
-
-.show {
-	opacity: 1;
+	transform: translateY(-100%);
+	transition: opacity 0.6s linear, transform 0.5s;
 }
 
 .message {
-	font-size: 1.2rem;
-	font-weight: 700;
+	display: flex;
+	align-items: center;
+	font-size: 1.4rem;
+	font-weight: 500;
 }
 
-.fa-triangle-exclamation {
-	color: var(--yellow);
+.message > i {
+	height: 100%;
+	margin-right: 5px;
+}
+
+.error {
+	background: var(--red); 
+	color: var(--gray-blue);
+}
+.error > i { color: var(--yellow); }
+
+.warning {
+	background: var(--yellow);
+	color: var(--gray-blue);
+}
+.warning > i {
+	color: var(--dark-blue);
 }
 
 .favoritesHelp {

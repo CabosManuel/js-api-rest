@@ -1,5 +1,6 @@
-const NUM_GIFS = 4;
-const MAX_FAVORITES = 2;
+const NUM_GIFS = 6;
+const MAX_FAVORITES = 4;
+const MAX_NOTIFICATIONS = 3;
 
 // Documentation: https://waifu.pics/docs
 const API_URL_BASE = 'https://api.waifu.pics/sfw';
@@ -135,6 +136,7 @@ function toggleHelpText() {
 		helpText.style.display = 'block';
 }
 
+// VALIDATIONS ---------------------------------------------------
 function validateDuplicatesFavorites(imgGif) {
 	return !gifsFavoritesList.includes(imgGif);
 }
@@ -142,8 +144,49 @@ function validateDuplicatesFavorites(imgGif) {
 function validateMaxFavorites() {
 	let nFavorites = gifsFavorites.querySelectorAll('img').length;
 	let isLessThanMaxFavorites = nFavorites < MAX_FAVORITES;
+	if (!isLessThanMaxFavorites) newNotification(MSG_MAX_FAVORITES, TYPE_ERROR);
+
 	return isLessThanMaxFavorites;
 }
+
+// NOTIFICATIONS ----------------------------------------------
+const TYPE_ERROR = 'error';
+const TYPE_WARNING = 'warning';
+
+const MSG_MAX_FAVORITES =
+`<p class="message error">
+	<i class="fa-solid fa-lg fa-triangle-exclamation"></i>
+	Maximum only ${MAX_FAVORITES} favorites
+</p>`;
+
+const notificationsContainer = document.querySelector('.notifications');
+
+function newNotification(msg, type) {
+	const notification = document.createElement('div');
+	notification.classList.add('notification');
+	notification.classList.add(type);
+	notification.innerHTML = msg;
+
+	notificationsContainer.appendChild(notification);
+
+	// Forzar "reflow", recalcula y aplicar estilos .notification
+	void notification.offsetWidth;
+
+	notification.style.opacity = '1';
+  notification.style.transform = 'translateY(0)'; // Bajarlo y mostrarlo
+	
+	setTimeout(() => {
+		notification.style.opacity = '0';
+		notification.style.transform = 'translateY(-100%)'; // Subirlo fuera de la pantalla
+		
+		setTimeout(() => {
+			notification.remove();
+		}, 600);
+	}, 4000);
+
+	if (notificationsContainer.children.length > MAX_NOTIFICATIONS) {
+		notificationsContainer.removeChild(notificationsContainer.children[0]);
+	}
 }
 
 const BLACKLIST_GIFS = [
