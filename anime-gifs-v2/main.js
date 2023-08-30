@@ -107,6 +107,8 @@ function addToFavorites(imgGif) {
 		
 		gifsFavoritesList.push(imgGif);
 	}
+
+	toggleHelpText();
 }
 
 function removeFromFavorites(imgGif) {
@@ -119,6 +121,18 @@ function removeFromFavorites(imgGif) {
 	gifsFavoritesList.splice(indexToDelete, 1);
 	console.log('gif removed: ', imgGifFavoriteContainer);
 	console.log('gifsFavoritesList after: ', gifsFavoritesList);
+	
+	toggleHelpText();
+}
+// Hide help text in Favorites section
+function toggleHelpText() {
+	const helpText = document.querySelector('.favoritesHelp');
+	const nFavorites = gifsFavorites.querySelectorAll('img').length;
+
+	if (nFavorites > 0 && helpText.style.display !== 'none')
+		helpText.style.display = 'none';
+	else if (nFavorites === 0 && helpText.style.display === 'none')
+		helpText.style.display = 'block';
 }
 
 function validateDuplicatesFavorites(imgGif) {
