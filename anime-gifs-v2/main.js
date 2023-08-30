@@ -49,7 +49,7 @@ async function refreshGifs() {
 		historyGifs.push(data.url);
 		
 		animeGif.src = data.url;
-		
+		// TODO: Agregar gif de carga
 		// gifBox.classList.remove('loading');
 	}
 }
@@ -60,6 +60,7 @@ refreshGifs();
 btnRefresh.addEventListener('click', () => {
 	// gifBox.classList.add('loading');
 	refreshGifs();
+	cleanFavorites();
 });
 
 
@@ -125,6 +126,19 @@ function removeFromFavorites(imgGif) {
 	
 	toggleHelpText();
 }
+
+function cleanFavorites() {
+	const gifs = gifsFavorites.querySelectorAll('img');
+	
+	// Cuando haya al menos 1 favorito
+	if (gifs.length > 0){
+		gifs.forEach(gif => {
+			gif.remove();
+		});
+		toggleHelpText();
+	}
+}
+
 // Hide help text in Favorites section
 function toggleHelpText() {
 	const helpText = document.querySelector('.favoritesHelp');
