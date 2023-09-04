@@ -60,7 +60,7 @@ refreshGifs();
 btnRefresh.addEventListener('click', () => {
 	// gifBox.classList.add('loading');
 	refreshGifs();
-	cleanFavorites();
+	resetStarButtonsAndFavoritesImgs();
 });
 
 
@@ -127,13 +127,19 @@ function removeFromFavorites(imgGif) {
 	toggleHelpText();
 }
 
-function cleanFavorites() {
+function resetStarButtonsAndFavoritesImgs() {
+	const starsBtn = document.querySelectorAll('.star');
+	starsBtn.forEach(starBtn => {
+		starBtn.classList.toggle('star');
+		starBtn.classList.toggle('unstar');
+	});
+
 	const gifs = gifsFavorites.querySelectorAll('img');
 	
-	// Cuando haya al menos 1 favorito
+	// Cuando haya al menos 1 en la sección Favorites
 	if (gifs.length > 0){
 		gifs.forEach(gif => {
-			gif.remove();
+			removeFromFavorites(gif);
 		});
 		toggleHelpText();
 	}
