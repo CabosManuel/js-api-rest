@@ -8,7 +8,7 @@ const API_PATHS = [
 	'/bonk',
 	'/yeet',
 	'/kick',
-	'/smile',
+	// '/smile',
 	'/wave',
 	'/cry',
 	'/highfive',
@@ -225,6 +225,8 @@ const BLACKLIST_GIFS = [
 	'https://i.waifu.pics/gGX~reJ.gif',
 	// others
 	'https://i.waifu.pics/gwNlL3Q.gif', // duplicate
+	'https://i.waifu.pics/ve8lHum.gif', // duplicate kick 1
+	'https://i.waifu.pics/xaZig9L.gif', // duplicate kick 2
 	'https://i.waifu.pics/5S6AVgU.gif', // not safe
 	'https://i.waifu.pics/X6tN050.GIF', // static gif
 	'https://i.waifu.pics/JvYGKhE.gif', // broken gif
