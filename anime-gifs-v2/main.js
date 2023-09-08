@@ -8,7 +8,7 @@ const API_PATHS = [
 	'/bonk',
 	'/yeet',
 	'/kick',
-	// '/smile',
+	'/smile',
 	'/wave',
 	'/cry',
 	'/highfive',
@@ -25,6 +25,11 @@ const gifsRecommended = document.getElementById('gifsRecommended');
 for (let i = 1; i <= NUM_GIFS; i++) {
 	let gif = 
 	`<div class="gifBox">
+		
+		<div id="loader${i}" class="loader-box">
+			<span class="loader"></span>
+		</div>
+
 		<i class="unstar fa-solid fa-star fa-xl"></i>
 		<img id="animeGif${i}" class="gif" alt="Anime GIF ${i}">
 	</div>`;
@@ -40,6 +45,12 @@ async function refreshGifs() {
 		const animeGif = document.getElementById(`animeGif${i}`);
 		let randomIndexPath = Math.floor(Math.random() * API_PATHS.length);
 		
+		const loaderId = `loader${i}`;
+		// const loaderBox = document.getElementById(loaderId);
+		// loaderBox.style.display = 'flex';
+		
+		toggleLoader(loaderId);
+		
 		let response;
 		do {
 			response = await requestGif(`${API_URL_BASE}${API_PATHS[randomIndexPath]}`);
@@ -50,11 +61,36 @@ async function refreshGifs() {
 		
 		animeGif.src = data.url;
 		// TODO: Agregar gif de carga
-		// gifBox.classList.remove('loading');
+		
+		toggleLoader(loaderId);
+
+		// setTimeout(() => {
+			// loaderBox.style.display = 'none';
+		// }, 1000);
 	}
 }
 
 refreshGifs();
+
+function toggleLoader(id) {
+	const loader = document.getElementById(id);
+	const allLoader = document.querySelectorAll('.loader-box');
+	const btnRefresh = document.getElementById('btnRefresh');
+	
+	if (loader.style.display === 'flex') {
+		
+		setTimeout(() => {
+			loader.style.display = 'none';
+		}, 600);
+
+	} else {
+		
+		allLoader.forEach(l => {
+			l.style.display = 'flex';
+		});
+
+	}
+}
 
 // Event click refresh image
 btnRefresh.addEventListener('click', () => {
