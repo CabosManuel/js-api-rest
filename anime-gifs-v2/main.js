@@ -1,5 +1,5 @@
 const RECOMMENDED_GIFS = 12;
-const MAX_FAVORITES = 4;
+const MAX_FAVORITES = 6;
 const MAX_NOTIFICATIONS = 3;
 
 // Documentation: https://waifu.pics/docs
@@ -37,7 +37,7 @@ for (let i = 1; i <= RECOMMENDED_GIFS; i++) {
 	gifsRecommended.innerHTML += gif;
 }
 
-// First reload gifs
+// First refresh gifs
 refreshRecommendedGifs();
 
 async function refreshRecommendedGifs() {
@@ -118,7 +118,6 @@ function toggleDisabledBtnRefresh() {
 
 // Event click btnRefresh
 btnRefresh.addEventListener('click', () => {
-	console.log('click');
 	refreshRecommendedGifs();
 	resetStarButtonsAndFavoritesImgs();
 });
@@ -247,7 +246,7 @@ function newNotification(msg, type) {
 
 	notificationsContainer.appendChild(notification);
 
-	// Forzar "reflow", recalcula y aplicar estilos .notification
+	// Forzar "reflow", recalculr y aplicar estilos .notification
 	void notification.offsetWidth;
 
 	notification.style.opacity = '1';
