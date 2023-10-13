@@ -1,4 +1,4 @@
-const RECOMMENDED_GIFS = 6;
+const RECOMMENDED_GIFS = 12;
 const MAX_FAVORITES = 4;
 const MAX_NOTIFICATIONS = 3;
 
@@ -46,9 +46,9 @@ async function refreshRecommendedGifs() {
 	// Block btnRefresh
 	toggleDisabledBtnRefresh();
 
+	showAllImgLoaders();
+
 	for (let i = 1; i <= RECOMMENDED_GIFS; i++) {
-		// Show loader animation
-		toggleLoader(i);
 		
 		const gifContainer = document.getElementById(`animeGif${i}`);
 		
@@ -66,12 +66,10 @@ async function refreshRecommendedGifs() {
 		// Save in history
 		historyGifs.push(data.url);
 		
-		// BUG: Arreglar loader, hace múltiples llamadas a toggle y hace que
-		// se descuadren los loaders
 		// Hide loader animation
-		toggleLoader(i);
+		hideLoaderImg(i);
 
-		// Active btnRefresh when last gif is set
+		// Active btnRefresh when last gif is set, wait 1seg
 		if (gifContainer.src && i === RECOMMENDED_GIFS) {
 			setTimeout(() => {
 				toggleDisabledBtnRefresh();
@@ -80,22 +78,22 @@ async function refreshRecommendedGifs() {
 	}
 }
 
-function toggleLoader(i) {
-	const loader = document.getElementById(`loader${i}`);
+function showAllImgLoaders() {
 	const allLoaders = document.querySelectorAll('.loader-box');
 	
+	allLoaders.forEach(loader => {
+		loader.style.display = 'flex';
+	});
+}
+
+function hideLoaderImg(i) {
+	const loader = document.getElementById(`loader${i}`);
+	
+	// When is visible (flex), wait 0.6 seg and hide loader
 	if (loader.style.display === 'flex') {
-		
 		setTimeout(() => {
 			loader.style.display = 'none';
 		}, 600);
-
-	} else {
-		
-		allLoaders.forEach(loader => {
-			loader.style.display = 'flex';
-		});
-		
 	}
 }
  
@@ -204,9 +202,6 @@ function resetStarButtonsAndFavoritesImgs() {
 		toggleHelpText();
 	}
 }
-
-// TOGGLES ------------------------------------------------------
-
 
 // Hide help text in Favorites section
 function toggleHelpText() {
