@@ -1,4 +1,4 @@
-const NUM_GIFS = 6;
+const RECOMMENDED_GIFS = 6;
 const MAX_FAVORITES = 4;
 const MAX_NOTIFICATIONS = 3;
 
@@ -22,7 +22,7 @@ async function requestGif(url) {
 const btnRefresh = document.getElementById('btnRefresh');
 const gifsRecommended = document.getElementById('gifsRecommended');
 
-for (let i = 1; i <= NUM_GIFS; i++) {
+for (let i = 1; i <= RECOMMENDED_GIFS; i++) {
 	let gif = 
 	`<div class="gifBox">
 		
@@ -37,45 +37,52 @@ for (let i = 1; i <= NUM_GIFS; i++) {
 	gifsRecommended.innerHTML += gif;
 }
 
-// TODO: Hacer que se carguen todas al mismo tiempo y no una por una
-async function refreshGifs() {
+// First reload gifs
+refreshRecommendedGifs();
+
+async function refreshRecommendedGifs() {
 	let historyGifs = [];
 
-	for (let i = 1; i <= NUM_GIFS; i++) {
-		const animeGif = document.getElementById(`animeGif${i}`);
+	// Block btnRefresh
+	toggleDisabledBtnRefresh();
+
+	for (let i = 1; i <= RECOMMENDED_GIFS; i++) {
+		// Show loader animation
+		toggleLoader(i);
+		
+		const gifContainer = document.getElementById(`animeGif${i}`);
+		
+		// Get random gif
 		let randomIndexPath = Math.floor(Math.random() * API_PATHS.length);
-		
-		const loaderId = `loader${i}`;
-		// const loaderBox = document.getElementById(loaderId);
-		// loaderBox.style.display = 'flex';
-		
-		toggleLoader(loaderId);
-		
 		let response;
 		do {
 			response = await requestGif(`${API_URL_BASE}${API_PATHS[randomIndexPath]}`);
 			data = await response.json();
 		} while ( (BLACKLIST_GIFS.includes(data.url) || historyGifs.includes(data.url)) && response.ok )
 		
+		// Set gif in container
+		gifContainer.src = data.url;
+
+		// Save in history
 		historyGifs.push(data.url);
 		
-		animeGif.src = data.url;
-		// TODO: Agregar gif de carga
-		
-		toggleLoader(loaderId);
+		// BUG: Arreglar loader, hace múltiples llamadas a toggle y hace que
+		// se descuadren los loaders
+		// Hide loader animation
+		toggleLoader(i);
 
-		// setTimeout(() => {
-			// loaderBox.style.display = 'none';
-		// }, 1000);
+		// Active btnRefresh when last gif is set
+		if (gifContainer.src && i === RECOMMENDED_GIFS) {
+			setTimeout(() => {
+				toggleDisabledBtnRefresh();
+			}, 1000);
+		}
 	}
 }
 
-refreshGifs();
-
-function toggleLoader(id) {
-	const loader = document.getElementById(id);
-	const allLoader = document.querySelectorAll('.loader-box');
-	const btnRefresh = document.getElementById('btnRefresh');
+function toggleLoader(i) {
+	const loader = document.getElementById(`loader${i}`);
+	const allLoaders = document.querySelectorAll('.loader-box');
 	
 	if (loader.style.display === 'flex') {
 		
@@ -85,25 +92,42 @@ function toggleLoader(id) {
 
 	} else {
 		
-		allLoader.forEach(l => {
-			l.style.display = 'flex';
+		allLoaders.forEach(loader => {
+			loader.style.display = 'flex';
 		});
+		
+	}
+}
+ 
+function toggleDisabledBtnRefresh() {
+	const btnRefresh = document.getElementById('btnRefresh');
+	const green = '#058c42';
+	const darkGreen = '#04471c';
+	const white = '#eff6e0';
 
+	if (btnRefresh.disabled) {
+		btnRefresh.disabled = false;
+		btnRefresh.style.backgroundColor = green;
+		btnRefresh.style.color = white;
+		btnRefresh.style.cursor = 'pointer';
+	} else {
+		btnRefresh.disabled = true;
+		btnRefresh.style.backgroundColor = darkGreen;
+		btnRefresh.style.color = 'grey';
+		btnRefresh.style.cursor = 'not-allowed';
 	}
 }
 
-// Event click refresh image
+// Event click btnRefresh
 btnRefresh.addEventListener('click', () => {
-	// gifBox.classList.add('loading');
-	refreshGifs();
+	console.log('click');
+	refreshRecommendedGifs();
 	resetStarButtonsAndFavoritesImgs();
 });
 
-
+// STAR BUTTONS --------------------------------------------------------
 let unstarBtnsRecommended = gifsRecommended.querySelectorAll('.unstar');
 let starBtnsRecommended = gifsRecommended.querySelectorAll('.star');
-console.log('unstar',unstarBtnsRecommended);
-console.log('star',starBtnsRecommended);
 
 addListenerFavoriteBtns();
 
@@ -180,6 +204,9 @@ function resetStarButtonsAndFavoritesImgs() {
 		toggleHelpText();
 	}
 }
+
+// TOGGLES ------------------------------------------------------
+
 
 // Hide help text in Favorites section
 function toggleHelpText() {
