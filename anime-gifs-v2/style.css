@@ -23,6 +23,7 @@ html {
 
 body {
 	width: 1000px;
+	min-width: 300px;
 	margin: 0 auto;
 	display: flex;
 	flex-direction: column;
@@ -279,25 +280,12 @@ a {
 }
 
 @media (max-width: 1000px) {
-
-	body {
-		width: 70%;
-		min-width: 300px;
-	}
-
-}
-
-@media (max-width: 720px) {
-
 	body {
 		width: 90%;
-		min-width: 300px;
 	}
-
 }
 
 @media (max-width: 500px) {
-
 	#gifsRecommended > .gifBox > .gif {
 		width: 250px;
 	}
@@ -305,5 +293,4 @@ a {
 	#gifsFavorites > .gifBox > .gif {
 		width: 250px;
 	}
-
 }
