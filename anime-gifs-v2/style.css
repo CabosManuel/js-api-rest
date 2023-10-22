@@ -118,7 +118,7 @@ button {
 
 .favSection {
 	width: 100%;
-	margin-top: 20px;
+	margin: 20px 20px 0;
 	padding: 10px;
 	display: flex;
 	flex-direction: column;
@@ -291,6 +291,18 @@ a {
 	body {
 		width: 90%;
 		min-width: 300px;
+	}
+
+}
+
+@media (max-width: 500px) {
+
+	#gifsRecommended > .gifBox > .gif {
+		width: 250px;
+	}
+
+	#gifsFavorites > .gifBox > .gif {
+		width: 250px;
 	}
 
 }

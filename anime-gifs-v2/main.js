@@ -246,7 +246,7 @@ function newNotification(msg, type) {
 
 	notificationsContainer.appendChild(notification);
 
-	// Forzar "reflow", recalculr y aplicar estilos .notification
+	// Forzar "reflow", recalcula y aplicar estilos .notification
 	void notification.offsetWidth;
 
 	notification.style.opacity = '1';
